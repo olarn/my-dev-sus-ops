@@ -23,7 +23,7 @@ fastify.get("/", (request, reply) => {
     ID: uuidv4(),
   });
 });
-fastify.get("/signup", (req, reply) => {
+fastify.get("/token", (req, reply) => {
   const token = fastify.jwt.sign({ HOST: os.hostname() });
   reply.send({ token });
 });

@@ -1,0 +1,100 @@
+version: '3.4'
+
+networks:
+  k6:
+  grafana:
+
+services:
+  influxdb:
+    image: influxdb:1.8
+    networks:
+      - k6
+      - grafana
+    ports:
+      - "8086:8086"
+    environment:
+      - INFLUXDB_DB=k6
+
+  grafana:
+    image: grafana/grafana:9.3.8
+    networks:
+      - grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_BASIC_ENABLED=false
+    volumes:
+      - ./grafana:/etc/grafana/provisioning/
+
+  k6:
+    image: grafana/k6:latest
+    networks:
+      - k6
+    ports:
+      - "6565:6565"
+    environment:
+      - K6_OUT=influxdb=http://influxdb:8086/k6
+    volumes:
+      - ./k6script:/scripts
+  
+  srv01:
+    container_name: app-srv01
+    networks:
+      - k6
+    build:
+      context: ./demo-service
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3003:3000"
+    deploy:
+        resources:
+            limits:
+              cpus: '0.50'
+              memory: 150M
+            reservations:
+              cpus: '0.20'
+              memory: 15M
+  srv02:
+    container_name: app-srv02
+    networks:
+      - k6
+    build:
+      context: ./demo-service
+      dockerfile: Dockerfile
+    restart: always
+    deploy:
+        resources:
+            limits:
+              cpus: '0.50'
+              memory: 150M
+            reservations:
+              cpus: '0.20'
+              memory: 15M
+  srv03:
+    container_name: app-srv03
+    networks:
+      - k6
+    build:
+      context: ./demo-service
+      dockerfile: Dockerfile
+    restart: always
+    deploy:
+        resources:
+            limits:
+              cpus: '0.50'
+              memory: 150M
+            reservations:
+              cpus: '0.20'
+              memory: 15M
+  loadbalancer:
+    container_name: app-loadbalancer
+    networks:
+      - k6
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8088:80"

@@ -2,11 +2,12 @@ import http from "k6/http";
 import { check, group, sleep } from "k6";
 
 export const options = {
+  // load balancer test
   // กำหนดขั้นตอนได้โดยไม่ต้องใส่ parameter --vus, --duration
   stages: [
-    { duration: "1m", target: 2 }, // target คือ VUs
-    { duration: "1m", target: 1 },
-    { duration: "10s", target: 0 },
+    { duration: "30s", target: 3 }, // target คือ VUs
+    { duration: "30s", target: 6 },
+    { duration: "30s", target: 9 },
   ],
 };
 
@@ -25,7 +26,7 @@ export default async function () {
   });
 
   group("GET Token", function () {
-    let res = http.get("http://" + server + ":3001/token");
+    let res = http.get("http://" + server + ":8088/token");
     let j = JSON.parse(res.body);
     token = j.token;
     check(res, {
@@ -34,7 +35,7 @@ export default async function () {
   });
 
   group("Load MockData", function () {
-    let res = http.get("http://" + server + ":3001/datamock", {
+    let res = http.get("http://" + server + ":8088/datamock", {
       headers: { Authorization: "Bearer " + token },
     });
 

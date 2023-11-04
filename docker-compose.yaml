@@ -38,7 +38,7 @@ services:
       resources:
         limits:
           cpus: '0.50'
-          memory: 150M
+          memory: 80m
         reservations:
           cpus: '0.20'
           memory: 15M
@@ -54,7 +54,7 @@ services:
       resources:
         limits:
           cpus: '0.50'
-          memory: 150M
+          memory: 80M
         reservations:
           cpus: '0.20'
           memory: 15M
@@ -70,7 +70,7 @@ services:
       resources:
         limits:
           cpus: '0.50'
-          memory: 150M
+          memory: 80M
         reservations:
           cpus: '0.20'
           memory: 15M

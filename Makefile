@@ -16,3 +16,12 @@ srv1:
 
 start-service:
 	docker compose up srv01 srv02 srv03 loadbalancer
+
+k6-csv:
+	docker run -v ./report:/report --rm -i grafana/k6 run  --out csv=/report/results.csv  - < ./scripts/step.js
+
+xk6:
+	docker run -v ./scripts:/scripts -v ./report:/report \
+	-p 5665:5665  \
+	-it --rm ghcr.io/grafana/xk6-dashboard:latest run \
+	--out dashboard=report=/report/test-report.html /scripts/step.js

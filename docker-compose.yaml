@@ -1,16 +1,14 @@
-version: '3.4'
+version: "3.4"
 
 networks:
   k6:
   grafana:
 
-
 services:
-
   k6:
     image: grafana/k6:latest
     stdin_open: true # docker run -i
-    tty: true   
+    tty: true
     networks:
       - k6
     ports:
@@ -18,13 +16,13 @@ services:
     volumes:
       - ./scripts:/scripts
     deploy:
-        resources:
-            limits:
-              cpus: '1'
-              memory: 500M
-            reservations:
-              cpus: '0.20'
-              memory: 15M
+      resources:
+        limits:
+          cpus: "1"
+          memory: 500M
+        reservations:
+          cpus: "0.20"
+          memory: 15M
 
   srv01:
     container_name: app-srv01
@@ -37,10 +35,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.50'
-          memory: 80m
+          cpus: "0.50"
+          memory: 160m
         reservations:
-          cpus: '0.20'
+          cpus: "0.20"
           memory: 15M
   srv02:
     container_name: app-srv02
@@ -53,10 +51,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: "0.50"
           memory: 80M
         reservations:
-          cpus: '0.20'
+          cpus: "0.20"
           memory: 15M
   srv03:
     container_name: app-srv03
@@ -69,10 +67,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.50'
+          cpus: "0.50"
           memory: 80M
         reservations:
-          cpus: '0.20'
+          cpus: "0.20"
           memory: 15M
 
   loadbalancer:

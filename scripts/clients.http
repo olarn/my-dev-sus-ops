@@ -1,0 +1,15 @@
+GET http://localhost:3001/hello
+###
+GET http://localhost:3001/hello50ms
+###
+GET http://localhost:3001/hello100ms
+###
+GET http://localhost:3001/hello10ms
+###
+GET http://localhost:3001/hello250ms
+###
+GET http://localhost:3001/mock
+###
+GET http://localhost:3001/mock5mb
+###
+GET http://localhost:3001/mock15mb
